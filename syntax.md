@@ -103,6 +103,7 @@ Since the auto-incremented and auto-assigned designator is not known to the user
                           # setting to true will display the shield as a thin black line
                           # using a color (see below) will render the shield in that color
                           # using 's' as the wire number
+  color: <color>          # see below
   notes: <str>   
 
   # product information (all optional)
