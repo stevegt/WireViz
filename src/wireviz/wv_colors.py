@@ -145,6 +145,6 @@ def html_color_icon(inp):
     if inp == None:  # no color specified
         return ''
     elif inp == "WH":  # color matches background color
-        return '&#x25A1;'  # square outline in default text color
+        return '&#x25CB;'  # circle outline in default text color
     else:
-        return f'<font color="{translate_color(inp, "HEX")}">&#x25A0;</font>'  # filled square in requested color
+        return f'<font color="{translate_color(inp, "HEX")}">&#x25CF;</font>'  # filled circle in requested color
