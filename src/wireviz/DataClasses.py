@@ -21,6 +21,7 @@ class Connector:
     notes: Optional[str] = None
     pinlabels: List[Any] = field(default_factory=list)
     pins: List[Any] = field(default_factory=list)
+    pincolors: List[Any] = field(default_factory=list)
     color: Optional[str] = None
     show_name: bool = None
     show_pincount: bool = None
@@ -50,11 +51,15 @@ class Connector:
             if len(self.pinlabels) != len(self.pins):
                 raise Exception('Given pins and pinlabels size mismatch')
 
+        # TODO: Check pincolor length
+
         # create default lists for pins (sequential) and pinlabels (blank) if not specified
         if not self.pins:
             self.pins = list(range(1, self.pincount + 1))
         if not self.pinlabels:
             self.pinlabels = [''] * self.pincount
+        if not self.pincolors:
+            self.pincolors = [None] * self.pincount
 
         if len(self.pins) != len(set(self.pins)):
             raise Exception('Pins are not unique')

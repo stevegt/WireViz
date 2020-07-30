@@ -139,3 +139,12 @@ def translate_color(input, color_mode):
         return output.upper()
     else:
         return output.lower()
+
+
+def html_color_icon(inp):
+    if inp == None:  # no color specified
+        return ''
+    elif inp == "WH":  # color matches background color
+        return '&#x25A1;'  # square outline in default text color
+    else:
+        return f'<font color="{translate_color(inp, "HEX")}">&#x25A0;</font>'  # filled square in requested color

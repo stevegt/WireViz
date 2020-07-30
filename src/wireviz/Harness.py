@@ -4,7 +4,7 @@
 from wireviz.DataClasses import Connector, Cable
 from graphviz import Graph
 from wireviz import wv_colors, wv_helper
-from wireviz.wv_colors import get_color_hex
+from wireviz.wv_colors import get_color_hex, html_color_icon
 from wireviz.wv_helper import awg_equiv, mm2_equiv, tuplelist2tsv, \
     nested_html_table, flatten2d, index_if_list, html_line_breaks, \
     graphviz_line_breaks, remove_line_breaks, open_file_read, open_file_write, \
@@ -105,11 +105,15 @@ class Harness:
 
             if connector.style != 'simple':
                 pinlist = []
-                for pin, pinlabel in zip(connector.pins, connector.pinlabels):
+                for counter, pin, pinlabel in zip(range(0, len(connector.pins)), connector.pins, connector.pinlabels):
                     if connector.hide_disconnected_pins and not connector.visible_pins.get(pin, False):
                         continue
                     pinlist.append([f'<td port="p{pin}l">{pin}</td>' if connector.ports_left else None,
-                                    f'<td>{pinlabel}</td>' if pinlabel else '',
+                                    f'<td>{pinlabel}</td>' if pinlabel else None,
+                                    # f'<td>{counter}</td>',  # for debugging only
+                                    f'<td sides="tbl">{connector.pincolors[counter].replace("__","")}</td>' if connector.pincolors and connector.pincolors[counter] else None,
+                                    # f'<td bgcolor="{wv_colors.translate_color(connector.pincolors[counter], "HEX")}" width="4"></td>' if connector.pincolors else None,
+                                    f'<td sides="tbr">{html_color_icon(connector.pincolors[counter])}</td>' if connector.pincolors and connector.pincolors[counter] else None,
                                     f'<td port="p{pin}r">{pin}</td>' if connector.ports_right else None])
 
                 pinhtml = '<table border="0" cellspacing="0" cellpadding="3" cellborder="1">'
@@ -172,7 +176,7 @@ class Harness:
             if cable.color: # add color bar next to color info, if present
                 colorbar = f' bgcolor="{wv_colors.translate_color(cable.color, "HEX")}" width="4"></td>' # leave out '<td' from string to preserve any existing attributes of the <td> tag
                 html = html.replace('><!-- colorbar --></td>', colorbar)
-            
+
             wirehtml = '<table border="0" cellspacing="0" cellborder="0">'  # conductor table
             wirehtml = f'{wirehtml}<tr><td>&nbsp;</td></tr>'
 
