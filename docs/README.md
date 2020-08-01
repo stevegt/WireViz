@@ -137,11 +137,7 @@ A description of the WireViz YAML input syntax can be found [here](syntax.md).
 
 ### (Re-)Building the example projects
 
-If you would like to rebuild all of the included demos, examples and tutorials, use the `build_examples.py` script:
-
-```cd src/wireviz
-./build_examples.py
-```
+Please see the [documentation of the `build_examples.py` script](buildscript.md) for info on building the demos, examples and tutorial.
 
 ## Changelog
 
