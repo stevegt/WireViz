@@ -141,7 +141,7 @@ A description of the WireViz YAML input syntax can be found [here](syntax.md).
 
 ### (Re-)Building the example projects
 
-Please see the [documentation of the `build_examples.py` script](buildscript.md) for info on building the demos, examples and tutorial.
+Please see the [documentation](buildscript.md) of the `build_examples.py` script for info on building the demos, examples and tutorial.
 
 ## Changelog
 
