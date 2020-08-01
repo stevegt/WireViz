@@ -112,6 +112,8 @@ git checkout dev
 pip3 install -e .
 ```
 
+If you would like to contribute to this project, make sure you read the [contribution guidelines](CONTRIBUTING.md)!
+
 ### How to run
 
 ```
