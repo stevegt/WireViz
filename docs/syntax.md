@@ -302,7 +302,7 @@ Supported color codes:
   ![##000000](https://via.placeholder.com/15/000000/000000?text=+)
   ...
 
-- `TEL` and `TELALT`  for [25-pair color code](https://en.wikipedia.org/wiki/Electronic_color_code#Color_band_system)
+- `TEL` and `TELALT`  for [25-pair color code](https://en.wikipedia.org/wiki/25-pair_color_code)
 - `T568A` and `T568B` for [TIA/EIA-568](https://en.wikipedia.org/wiki/TIA/EIA-568#Wiring) (e.g. Ethernet)
 - `BW` for alternating black and white
 
