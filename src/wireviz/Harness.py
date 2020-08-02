@@ -112,8 +112,8 @@ class Harness:
                                     f'<td>{pinlabel}</td>' if pinlabel else None,
                                     # f'<td>{counter}</td>',  # for debugging only
                                     f'<td sides="tbl">{connector.pincolors[counter].replace("__","")}</td>' if connector.pincolors and connector.pincolors[counter] else None,
-                                    # f'<td bgcolor="{wv_colors.translate_color(connector.pincolors[counter], "HEX")}" width="4"></td>' if connector.pincolors else None,
-                                    f'<td sides="tbr">{html_color_icon(connector.pincolors[counter])}</td>' if connector.pincolors and connector.pincolors[counter] else None,
+                                    f'<td><table border="0" cellborder="1"><tr><td bgcolor="{wv_colors.translate_color(connector.pincolors[counter], "HEX")}" cellborder="1" width="8" height="8" fixedsize="true"></td></tr></table></td>' if connector.pincolors else None,
+                                    # f'<td sides="tbr">{html_color_icon(connector.pincolors[counter])}</td>' if connector.pincolors and connector.pincolors[counter] else None,
                                     f'<td port="p{pin}r">{pin}</td>' if connector.ports_right else None])
 
                 pinhtml = '<table border="0" cellspacing="0" cellpadding="3" cellborder="1">'
