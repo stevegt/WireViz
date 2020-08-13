@@ -1,17 +1,23 @@
 # Contribution Guidelines
 
-When contributing to this repository, please first discuss the change you 
-wish to make via issue, email, or any other method with the owners of this 
+When contributing to this repository, please first discuss the change you
+wish to make via issue, email, or any other method with the owners of this
 repository before making a change.
 
-## Pull Requests
+## Pull Request workflow
 
-1. Fork this repository to your repository
-1. Clone the repository to your local machine
-1. Checkout the `dev` branch
-1. Make any changes to the code on the `dev` branch
-1. Push your changes to your fork
-1. Create new pull request
+- Fork this repository and clone it on your local machine.
+- Create a new feature branch on top of the `dev` branch.
+- Make any changes to the code on your feature branch.
+- Push the changes to your fork.
+- Create new pull request.
+
+### Hints
+
+- Make sure to [write good commit messages](https://chris.beams.io/posts/git-commit/).
+- If the `dev` branch has advanced since your fork, consider rebasing onto the current state to avoid merge conflicts.
+- For complex PRs, consider [interactively rebasing](https://thoughtbot.com/blog/git-interactive-rebase-squash-amend-rewriting-history) your contribution to remove intermediate commits and clean up the commit history.
+- Feel free to submit a [draft PR](https://github.blog/2019-02-14-introducing-draft-pull-requests/) for your work-in-progress. This lets other contributors comment on and review your code, while clearly marking it as not ready for merging.
 
 ## Documentation Strings
 
