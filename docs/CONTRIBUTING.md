@@ -6,11 +6,11 @@ repository before making a change.
 
 ## Pull Request workflow
 
-- Fork this repository and clone it on your local machine.
-- Create a new feature branch on top of the `dev` branch.
-- Make any changes to the code on your feature branch.
-- Push the changes to your fork.
-- Create new pull request.
+1. Fork this repository and clone it on your local machine.
+1. Create a new feature branch on top of the `dev` branch.
+1. Commit your code changes to this feature branch.
+1. Push the changes to your fork.
+1. Submit a new pull request, using `dev` as the base branch.
 
 ### Hints
 
