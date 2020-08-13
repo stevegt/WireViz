@@ -1,8 +1,6 @@
 # Contribution Guidelines
 
-When contributing to this repository, please first discuss the change you
-wish to make via issue, email, or any other method with the owners of this
-repository before making a change.
+When contributing to this repository, please [submit a new issue](https://github.com/formatc1702/WireViz/issues) first to discuss the proposed change, before submitting a pull request.
 
 ## Pull Request workflow
 
