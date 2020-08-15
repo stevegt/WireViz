@@ -39,6 +39,7 @@ additional_bom_items:  # custom items to add to BOM
   type: <str>   
   subtype: <str>   
   color: <color>  # see below
+  image: <image>  # see below
   notes: <str>   
 
   # product information (all optional)
@@ -103,7 +104,8 @@ Since the auto-incremented and auto-assigned designator is not known to the user
                           # setting to true will display the shield as a thin black line
                           # using a color (see below) will render the shield in that color
                           # using 's' as the wire number
-  color: <color>          # see below
+  color: <color>  # see below
+  image: <image>  # see below
   notes: <str>   
 
   # product information (all optional)
@@ -306,6 +308,27 @@ Supported color codes:
 - `T568A` and `T568B` for [TIA/EIA-568](https://en.wikipedia.org/wiki/TIA/EIA-568#Wiring) (e.g. Ethernet)
 - `BW` for alternating black and white
 
+
+## Images
+
+Both connectors and cables accept including an image with a caption within their respective nodes.
+
+```yaml
+image:
+  src: <path>        # path to the image file
+  # optional parameters:
+  caption: <str>     # text to display below the image
+  width: <int>       # range: 1~65535; unit: ???
+  height: <int>      # range: 1~65535; unit: ???
+  fixedsize: <bool>  # ???
+  scale: <str>       # scaling behavior; possible values:
+                     # false   does not scale the image
+                     # true    scale image proportionally
+                     #         to fit within given max. width and height
+                     # width   scale image proportionally to given width
+                     # height  scale image proportionally to given height
+                     # both    resize to given width and height
+```
 
 
 ## Multiline strings
