@@ -22,6 +22,7 @@ class Harness:
         self.connectors = {}
         self.cables = {}
         self.additional_bom_items = []
+        self.metadata = None
 
     def add_connector(self, name: str, *args, **kwargs) -> None:
         self.connectors[name] = Connector(name, *args, **kwargs)
@@ -293,41 +294,89 @@ class Harness:
             graph.format = f
             graph.render(filename=filename, view=view, cleanup=cleanup)
         graph.save(filename=f'{filename}.gv')
-        # bom output
+
+        # BOM output
         bom_list = self.bom_list()
         with open_file_write(f'{filename}.bom.tsv') as file:
             file.write(tuplelist2tsv(bom_list))
+
         # HTML output
-        with open_file_write(f'{filename}.html') as file:
-            file.write('<!DOCTYPE html>\n')
-            file.write('<html><head><meta charset="UTF-8"></head><body style="font-family:Arial">')
+        # TODO: specify template file in YAML metadata or as command line argument
+        with open('template.html', 'r') as file:
+            html = file.read()
 
-            file.write('<h1>Diagram</h1>')
-            with open_file_read(f'{filename}.svg') as svg:
-                file.write(re.sub(
-                    '^<[?]xml [^?>]*[?]>[^<]*<!DOCTYPE [^>]*>',
-                    '<!-- XML and DOCTYPE declarations from SVG file removed -->',
-                    svg.read(1024), 1))
-                for svgdata in svg:
-                    file.write(svgdata)
+        # embed SVG diagram
+        with open_file_read(f'{filename}.svg') as svg:
+            svgdata = svg.read()
+        html = html.replace('<!-- diagram -->', svgdata)
 
-            file.write('<h1>Bill of Materials</h1>')
-            listy = flatten2d(bom_list)
-            file.write('<table style="border:1px solid #000000; font-size: 14pt; border-spacing: 0px">')
-            file.write('<tr>')
-            for item in listy[0]:
-                file.write(f'<th align="left" style="border:1px solid #000000; padding: 8px">{item}</th>')
-            file.write('</tr>')
-            for row in listy[1:]:
-                file.write('<tr>')
-                for i, item in enumerate(row):
-                    item_str = item.replace('\u00b2', '&sup2;')
-                    align = 'align="right"' if listy[0][i] == 'Qty' else ''
-                    file.write(f'<td {align} style="border:1px solid #000000; padding: 4px">{item_str}</td>')
-                file.write('</tr>')
-            file.write('</table>')
+        # Alternative: embed <img> tag with link to SVG/PNG
+        # import os
+        # html = html.replace('<!-- diagram -->', '<img src="{filename}.png" />'.format(filename=os.path.basename(filename)))
 
-            file.write('</body></html>')
+        # generate BOM table
+        bom_list_flat = flatten2d(bom_list)
+        bom_list_flat.reverse()
+
+        bom_html = ''
+        bom_html = f'{bom_html}<table>'
+
+        # uncomment block for BOM header on top
+        # bom_html = f'{bom_html}<tr>'
+        # for item in bom_list_flat[0]:
+        #     bom_html = f'{bom_html}<td align="left">{item}</td>'
+        # bom_html = f'{bom_html}</tr>'
+
+        # for row in bom_list_flat[1:]: # non-reversed BOM
+        for row in bom_list_flat[0:-1]: # reversed BOM
+            bom_html = f'{bom_html}<tr>'
+            for i, item in enumerate(row):
+                align = 'align="right"' if bom_list_flat[0][i] == 'Qty' else ''
+                bom_html = f'{bom_html}<td {align}>{item}</td>'
+            bom_html = f'{bom_html}</tr>'
+        bom_html = f'{bom_html}<tr>'
+
+        # uncomment block for BOM header on bottom
+        for item in bom_list_flat[-1]: # reversed BOM
+            bom_html = f'{bom_html}<td align="left">{item}</td>'
+        bom_html = f'{bom_html}</tr>'
+        bom_html = f'{bom_html}</table>'
+        # bom_html = f'{bom_html}'
+        html = html.replace('<!-- bom -->', bom_html)
+
+        # fill out title block
+        if self.metadata:
+            html = html.replace('<!-- part_title -->', self.metadata.get('title', ''))
+            html = html.replace('<!-- part_number -->', self.metadata.get('partno', ''))
+            html = html.replace('<!-- company -->', self.metadata.get('company', ''))
+
+            # TODO: handle multi-page documents
+            html = html.replace('<!-- sheet_current -->', 'Sheet<br />1')
+            html = html.replace('<!-- sheet_total -->', 'of 1')
+
+            for i, (k, v) in enumerate(self.metadata.get('authors', {}).items(), 1):
+                title = k
+                name = v['name']
+                date = v['date'].strftime('%Y-%m-%d')
+                html = html.replace(f'<!-- process_{i}_title -->', title)
+                html = html.replace(f'<!-- process_{i}_name -->', name)
+                html = html.replace(f'<!-- process_{i}_date -->', date)
+
+            for i, (k, v) in enumerate(self.metadata.get('revisions', {}).items(), 1):
+                # TODO: for more than 8 revisions, keep only the 8 most recent ones
+                number = k
+                changelog = v['changelog']
+                name = v['name']
+                date = v['date'].strftime('%Y-%m-%d')
+                html = html.replace(f'<!-- rev_{i}_number -->', '{:02d}'.format(number))
+                html = html.replace(f'<!-- rev_{i}_changelog -->', changelog)
+                html = html.replace(f'<!-- rev_{i}_name -->', name)
+                html = html.replace(f'<!-- rev_{i}_date -->', date)
+
+            html = html.replace(f'"sheetsize_default"', '"{}"'.format(self.metadata['format']['sheetsize'])) # include quotes so no replacement happens within <style> definition
+
+        with open(f'{filename}.html','w') as file:
+            file.write(html)
 
     def bom(self):
         bom = []

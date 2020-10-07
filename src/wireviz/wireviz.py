@@ -57,6 +57,9 @@ def parse(yaml_input: str, file_out: (str, Path) = None, return_types: (None, st
             elif ty == list:
                 yaml_data[sec] = []
 
+    if 'metadata' in yaml_data:
+        harness.metadata = yaml_data['metadata']
+
     # add connections
 
     def check_designators(what, where): # helper function
